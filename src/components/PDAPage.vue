@@ -1,5 +1,18 @@
 <template>
   <div id="PDAPage">
+    <p><span>工单： </span>{{ workOrder }}</p>
+    <main>
+      <el-cascader
+        :options="stationOpts"
+        placeholder="请选择工站"
+        size="mini"
+        clearable
+        filterable
+        style="width: 100%; margin-bottom: 5px;"
+        @change="handleStationChange"
+      />
+      <el-input v-model="inputValue" placeholder="请输入工单" size="mini"/>
+    </main>
     <el-dialog title="登录"
       :visible.sync="dialogVisible"
       :fullscreen="true"
@@ -32,13 +45,25 @@ export default {
         username: '',
         password: ''
       },
-      empCode: ''
+      inputValue: '',
+      workOrder: '',
+      eCode: undefined,
+      pCode: undefined,
+      sCode: undefined,
+      stationOpts: []
     }
   },
   methods: {
+    handleStationChange ([pCode, sCode]) {
+      this.pCode = pCode
+      this.sCode = sCode
+    },
     _showDetail () {
-      this.empCode = this.form.username
-      this.dialogVisible = false
+      this.eCode = this.form.username
+      apis.fetchStationsByEmpCode(this.eCode).then(opts => {
+        this.stationOpts = opts
+        this.dialogVisible = false
+      })
     },
     login () {
       apis.login({...this.form}).then(success => {
