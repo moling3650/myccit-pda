@@ -2,16 +2,19 @@
   <div id="app">
     <img src="./assets/logo.png">
     <HelloWorld/>
+    <PDAPage/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld'
+import PDAPage from './components/PDAPage'
 
 export default {
   name: 'App',
   components: {
     HelloWorld
+    PDAPage
   }
 }
 </script>
