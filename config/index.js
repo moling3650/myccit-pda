@@ -10,7 +10,14 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/WebServicePDA.ashx': {
+        target: 'http://172.16.16.124:8022',
+        pathRewrite: {
+          '^/WebServicePDA.ashx': '/WebServicePDA.ashx'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

@@ -16,4 +16,7 @@ export default {
 </script>
 
 <style>
+.w300 {
+  width: 300px;
+}
 </style>
