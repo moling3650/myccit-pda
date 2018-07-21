@@ -8,10 +8,10 @@
     </el-row>
     <el-row :gutter="0" style="margin: 5px 0;">
       <el-col :span="12">
-        <span>工单： </span>{{ workOrder }}
+        <span>{{woText || '工单：'}} </span>{{ workOrder }}
       </el-col>
       <el-col :span="8" :offset="4">
-        <el-button size="mini" icon="el-icon-refresh" type="success" @click="workOrder = ''">重输主工单</el-button>
+        <el-button size="mini" icon="el-icon-refresh" type="success" @click="workOrder = ''">{{btnText || '重输主工单'}}</el-button>
       </el-col>
     </el-row>
     <main>
@@ -27,32 +27,32 @@
       <el-input v-show="tabName ==='first'" v-model="inputValue" @keyup.enter.native="handleEnter" :placeholder="placeholder" size="mini"/>
       <el-input v-show="tabName ==='second'" v-model="inputValue2" @keyup.enter.native="handleEnter" :placeholder="placeholder2" size="mini"/>
       <el-tabs type="border-card"  v-model="tabName" style="margin-top: 5px;">
-        <el-tab-pane label="数据采集" name="first">
+        <el-tab-pane :label="tabPaneLabels[0] || '数据采集'" name="first">
           <el-button-group>
-            <el-button size="mini" type="danger" icon="el-icon-arrow-left" @click="rollback">后退</el-button>
-            <el-button size="mini" type="primary" @click="saveStepsToLocal">保存<i class="el-icon-upload el-icon--right"></i></el-button>
+            <el-button size="mini" type="danger" icon="el-icon-arrow-left" @click="rollback">{{btnGroupTexts1[0] || '后退'}}</el-button>
+            <el-button size="mini" type="primary" @click="saveStepsToLocal">{{btnGroupTexts1[1] || '保存'}}<i class="el-icon-upload el-icon--right"></i></el-button>
           </el-button-group>
 
           <el-table :data="steps" style="width: 100%" :row-class-name="tableRowClassName">
-            <el-table-column prop="step_name" label="属性"/>
-            <el-table-column prop="step_value" label="值"/>
+            <el-table-column prop="step_name" :label="columnLabels1[0] || '属性'"/>
+            <el-table-column prop="step_value" :label="columnLabels1[1] || '值'"/>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="投料" name="second">
+        <el-tab-pane :label="tabPaneLabels[1] || '投料'" name="second">
           <el-button-group>
-            <el-button size="mini" :disabled="!subOrder" type="warning" icon="el-icon-remove-outline" @click="unloadMaterial">卸料</el-button>
-            <el-button size="mini" :disabled="!subOrder" type="danger" @click="cleaningMaterials">清料<i class="el-icon-delete el-icon--right"></i></el-button>
+            <el-button size="mini" :disabled="!subOrder" type="warning" icon="el-icon-remove-outline" @click="unloadMaterial">{{btnGroupTexts2[0] || '卸料'}}</el-button>
+            <el-button size="mini" :disabled="!subOrder" type="danger" @click="cleaningMaterials">{{btnGroupTexts2[1] || '清料'}}<i class="el-icon-delete el-icon--right"></i></el-button>
           </el-button-group>
           <el-table :data="materials" style="width: 100%;font-size: 12px" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="30"/>
-            <el-table-column label="物料" width="140" align="center">
+            <el-table-column :label="columnLabels2[0] || '物料'" width="140" align="center">
               <template slot-scope="scope">
                 <p>{{scope.row.mat_code}}</p>
                 <p>{{scope.row.p_name}}</p>
               </template>
             </el-table-column>
-            <el-table-column prop="lot_no" label="批次" width="80"/>
-            <el-table-column prop="lot_qty" label="数量"/>
+            <el-table-column prop="lot_no" :label="columnLabels2[1] || '批次'" width="80"/>
+            <el-table-column prop="lot_qty" :label="columnLabels2[2] || '数量'"/>
           </el-table>
         </el-tab-pane>
       </el-tabs>
@@ -102,6 +102,13 @@ export default {
   },
   data () {
     return {
+      woText: window.woText,
+      btnText: window.btnText,
+      tabPaneLabels: window.tabPaneLabels || [],
+      btnGroupTexts1: window.btnGroupTexts1 || [],
+      btnGroupTexts2: window.btnGroupTexts2 || [],
+      columnLabels1: window.columnLabels1 || [],
+      columnLabels2: window.columnLabels2 || [],
       dialogVisible: true,
       form: {
         username: '',
