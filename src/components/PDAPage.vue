@@ -290,6 +290,8 @@ export default {
       this.steps.map(step => {
         step.step_value = ''
       })
+      this.inputValue = ''
+      this.inputValue2 = ''
       this.stepIndex = 0
       this.isChecking = false
     },
